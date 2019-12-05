@@ -46,5 +46,3 @@ function Format-DependencyInjectionChecks {
         }
     Write-Output 'Finished refactor.'
 }
-
-Export-ModuleMember -Function Format-CurlyBraces, Format-DependencyInjectionChecks
