@@ -1,2 +1,2 @@
-Import-Module "$PSScriptRoot\Format-CurlyBraces.psm1"
-.\Format-DependencyInjectionChecks "$PSScriptRoot\tests"
+Import-Module "$PSScriptRoot\..\Format-Refactor.psm1"
+Format-DependencyInjctionChecks "$PSScriptRoot\tests"
