@@ -12,11 +12,13 @@
         [System.IO.FileInfo]$Path
     )
 
+    # Outline changes to user before proceeding
+
     Get-ChildItem -Path $Path -Recurse `
         | Where-Object { ! $_.PSIsContainer } `
         | ForEach-Object `
         {
-            (Get-Content -Path $_.PSPath -Raw) -replace '([ \t]*)(if[ \t]*\(.*\))[ \t]*(\r\n|\r|\n)*([ \t]*)([^{]*;)', "`$1`$2$([Environment]::NewLine)`$1{$([Environment]::NewLine)`$4`$5$([Environment]::NewLine)`$1}" `
+            (Get-Content -Path $_.PSPath -Raw) -replace '([ \t]*)(if[ \t]*\(.*\))[ \t]*(\r\n|\r|\n)*([ \t]*)([^{]*;)', "`$1`$2`$3`$1{`$3`$4`$5`$3`$1}" `
             | Out-File $_.PSPath
         }
 }
@@ -37,11 +39,10 @@ function Format-DependencyInjectionChecks {
 
     # Existing if null checks or Null coalescing
 
-    $files = Get-ChildItem -Path $Path -Recurse
     Get-ChildItem -Path $Path -Recurse | Where-Object { ! $_.PSIsContainer } `
         | ForEach-Object `
         {
-            (Get-Content -Path $_.PSPath -Raw) -replace '([ \t]*)(if[ \t]*\(.*\))[ \t]*(\r\n|\r|\n)*([ \t]*)([^{]*;)', "`$1`$2$([Environment]::NewLine)`$1{$([Environment]::NewLine)`$4`$5$([Environment]::NewLine)`$1}" `
+            (Get-Content -Path $_.PSPath -Raw) -replace '([ \t]*)(if[ \t]*\(.*\))[ \t]*(\r\n|\r|\n)*([ \t]*)([^{]*;)', "`$1`$2`$3`$1{`$3`$4`$5`$3`$1}" `
             | Out-File $_.PSPath
         }
     Write-Output 'Finished refactor.'
