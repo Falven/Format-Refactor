@@ -21,7 +21,7 @@
         }
 }
 
-function Format-DependencyInjctionChecks {
+function Format-DependencyInjectionChecks {
     param(
         [ValidateScript({
             if($null -eq $_) {
@@ -37,11 +37,12 @@ function Format-DependencyInjctionChecks {
 
     # Existing if null checks or Null coalescing
 
-    Get-ChildItem -Path $Path -Recurse `
-        | Where-Object { ! $_.PSIsContainer } `
+    $files = Get-ChildItem -Path $Path -Recurse
+    Get-ChildItem -Path $Path -Recurse | Where-Object { ! $_.PSIsContainer } `
         | ForEach-Object `
         {
             (Get-Content -Path $_.PSPath -Raw) -replace '([ \t]*)(if[ \t]*\(.*\))[ \t]*(\r\n|\r|\n)*([ \t]*)([^{]*;)', "`$1`$2$([Environment]::NewLine)`$1{$([Environment]::NewLine)`$4`$5$([Environment]::NewLine)`$1}" `
             | Out-File $_.PSPath
         }
+    Write-Output 'Finished refactor.'
 }
