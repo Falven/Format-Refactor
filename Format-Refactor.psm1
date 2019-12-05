@@ -35,6 +35,8 @@ function Format-DependencyInjctionChecks {
         [System.IO.FileInfo]$Path
     )
 
+    # Existing if null checks or Null coalescing
+
     Get-ChildItem -Path $Path -Recurse `
         | Where-Object { ! $_.PSIsContainer } `
         | ForEach-Object `
